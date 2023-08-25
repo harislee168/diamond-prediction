@@ -1,10 +1,10 @@
-
 import os
 import sys
 
 from src.exception import CustomException
 from src.logger import logging
 
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
@@ -29,6 +29,11 @@ class DataIngestion:
             df = df.drop_duplicates()
             logging.info('Drop duplicates')
 
+            df['x'] = df['x'].replace(0, np.nan)
+            df['y'] = df['y'].replace(0, np.nan)
+            df['z'] = df['z'].replace(0, np.nan)
+            logging.info('Replace to 0 value in x, y, and z to nan')
+
             os.makedirs(os.path.dirname(self.data_ingestion_config.train_data_path), exist_ok=True)
             df.to_csv(self.data_ingestion_config.raw_data_path, index=False, header=True)
             logging.info('created artifacts folder and saved the raw dataset')
@@ -45,7 +50,3 @@ class DataIngestion:
             )
         except Exception as e:
             raise CustomException(e, sys)
-
-if __name__ == '__main__':
-    obj = DataIngestion()
-    obj.initiate_data_ingestion()
