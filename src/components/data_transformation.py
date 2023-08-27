@@ -76,7 +76,6 @@ class DataTransformation:
 
             logging.info('Transform X_test')
             X_test_transformed = transformer_obj.transform(X_test)
-            print(X_test_transformed)
 
             logging.info('Create and save pickle file')
             save_object(self.data_transformation_config.preprocessor_obj_file_path, transformer_obj)
