@@ -9,11 +9,11 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 from dotenv import load_dotenv
-from src.utils import convert_diamond_features_to_dataframe, load_object
-from src.request_model.diamond_features import DiamondFeatures
+# from src.utils import convert_diamond_features_to_dataframe, load_object
+# from src.request_model.diamond_features import DiamondFeatures
 
-from src.components.data_transformation import DataTransformation
-from src.components.model_trainer import ModelTrainer
+# from src.components.data_transformation import DataTransformation
+# from src.components.model_trainer import ModelTrainer
 
 @dataclass
 class DataIngestionConfig:

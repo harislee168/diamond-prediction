@@ -1,5 +1,6 @@
 import pandas as pd
 import pickle
+
 from src.request_model.diamond_features import DiamondFeatures
 
 def save_object(file_path, obj):

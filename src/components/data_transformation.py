@@ -1,7 +1,6 @@
 import sys
 import os
 
-import numpy as np
 import pandas as pd
 
 from sklearn.compose import ColumnTransformer, make_column_selector
@@ -83,7 +82,7 @@ class DataTransformation:
             save_object(self.data_transformation_config.preprocessor_obj_file_path, transformer_obj)
 
             return (
-                X_train_transformed, X_test_transformed, y_train, y_test, self.data_transformation_config.preprocessor_obj_file_path
+                X_train_transformed, X_test_transformed, y_train, y_test
             )
 
         except Exception as e:
