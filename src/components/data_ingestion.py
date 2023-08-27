@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
 from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 
 @dataclass
 class DataIngestionConfig:
@@ -58,4 +59,8 @@ class DataIngestion:
 #     train_data_path, test_data_path = di.initiate_data_ingestion()
 
 #     dt = DataTransformation()
-#     train_transformed_df, test_transformed_df, preprocessor_obj_file_path = dt.initiate_data_transformation(train_data_path, test_data_path)
+#     slim_X_train_transformed, slim_X_test_transformed, y_train, y_test, preprocessor_obj_file_path = dt.initiate_data_transformation(train_data_path, test_data_path)
+
+#     mt = ModelTrainer()
+#     test_score = mt.initiate_model_trainer(slim_X_train_transformed, slim_X_test_transformed, y_train, y_test)
+#     print(f'r2_score is: {test_score}')

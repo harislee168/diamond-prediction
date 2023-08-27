@@ -11,7 +11,7 @@ from sklearn.pipeline import Pipeline
 
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import construct_back_dataframe, save_object
+from src.utils import get_slim_dataframe, save_object
 from dataclasses import dataclass
 
 @dataclass
@@ -76,21 +76,23 @@ class DataTransformation:
 
             logging.info('Fit Transform the X_train')
             X_train_transformed = transformer_obj.fit_transform(X_train)
-            logging.info('Construct back X_train dataframe')
-            train_transformed_df = construct_back_dataframe(
-                transformer_obj, X_train_transformed, y_train)
+
+            logging.info('Construct back X_train and get the slim dataframe')
+            slim_X_train_transformed = get_slim_dataframe(
+                transformer_obj, X_train_transformed)
 
             logging.info('Transform X_test')
             X_test_transformed = transformer_obj.transform(X_test)
-            logging.info('Construct back X_test dataframe')
-            test_transformed_df = construct_back_dataframe(
-                transformer_obj, X_test_transformed, y_test)
+
+            logging.info('Construct back X_test and get the slim dataframe')
+            slim_X_test_transformed = get_slim_dataframe(
+                transformer_obj, X_test_transformed)
 
             logging.info('Create and save pickle file')
             save_object(self.data_transformation_config.preprocessor_obj_file_path, transformer_obj)
 
             return (
-                train_transformed_df, test_transformed_df, self.data_transformation_config.preprocessor_obj_file_path
+                slim_X_train_transformed, slim_X_test_transformed, y_train, y_test, self.data_transformation_config.preprocessor_obj_file_path
             )
 
         except Exception as e:
