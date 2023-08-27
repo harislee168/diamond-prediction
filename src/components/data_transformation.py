@@ -11,12 +11,15 @@ from sklearn.pipeline import Pipeline
 
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import reconstruct_to_dataframe, save_object
+from src.utils import save_object
 from dataclasses import dataclass
+from dotenv import load_dotenv
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path = os.path.join('artifacts', 'preprocessor.pkl')
+    if os.getenv('ARTIFACTS_FOLDER') is None:
+        load_dotenv()
+    preprocessor_obj_file_path = os.path.join(os.getenv('ARTIFACTS_FOLDER'), os.getenv('PREPROCESSOR_PICKLE'))
 
 class DataTransformation:
 
@@ -72,22 +75,15 @@ class DataTransformation:
             logging.info('Fit Transform the X_train')
             X_train_transformed = transformer_obj.fit_transform(X_train)
 
-            logging.info('Construct back X_train slim dataframe')
-            slim_X_train_transformed = reconstruct_to_dataframe(
-                transformer_obj, X_train_transformed)
-
             logging.info('Transform X_test')
             X_test_transformed = transformer_obj.transform(X_test)
-
-            logging.info('Construct back X_test slim dataframe')
-            slim_X_test_transformed = reconstruct_to_dataframe(
-                transformer_obj, X_test_transformed)
+            print(X_test_transformed)
 
             logging.info('Create and save pickle file')
             save_object(self.data_transformation_config.preprocessor_obj_file_path, transformer_obj)
 
             return (
-                slim_X_train_transformed, slim_X_test_transformed, y_train, y_test, self.data_transformation_config.preprocessor_obj_file_path
+                X_train_transformed, X_test_transformed, y_train, y_test, self.data_transformation_config.preprocessor_obj_file_path
             )
 
         except Exception as e:

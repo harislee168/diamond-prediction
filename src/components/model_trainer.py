@@ -4,6 +4,7 @@ import sys
 from xgboost import XGBRegressor
 from sklearn.metrics import r2_score
 from dataclasses import dataclass
+from dotenv import load_dotenv
 
 from src.exception import CustomException
 from src.logger import logging
@@ -11,15 +12,17 @@ from src.utils import save_object
 
 @dataclass
 class ModelTrainerConfig:
-    trained_model_file_path = os.path.join('artifacts', 'model.pkl')
+    if os.getenv('ARTIFACTS_FOLDER') is None:
+        load_dotenv()
+    trained_model_file_path = os.path.join(os.getenv('ARTIFACTS_FOLDER'), os.getenv('MODEL_PICKLE'))
 
 class ModelTrainer:
 
     def __init__(self):
         self.model_trainer_config = ModelTrainerConfig()
 
-    def initiate_model_trainer(self, slim_X_train_transformed,
-                               slim_X_test_transformed, y_train_df, y_test_df):
+    def initiate_model_trainer(self, X_train_transformed,
+                               X_test_transformed, y_train_df, y_test_df):
         try:
             logging.info('initializa the params for XGBoost')
             params = {
@@ -33,10 +36,10 @@ class ModelTrainer:
 
             logging.info('create and fit the model with train_df')
             xgb_model = XGBRegressor(**params)
-            xgb_model.fit(slim_X_train_transformed, y_train_df)
+            xgb_model.fit(X_train_transformed, y_train_df)
 
             logging.info('predict the test data')
-            y_pred = xgb_model.predict(slim_X_test_transformed)
+            y_pred = xgb_model.predict(X_test_transformed)
 
             logging.info('check the prediciton score of the model')
             test_score = r2_score(y_true=y_test_df, y_pred=y_pred)

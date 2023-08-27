@@ -7,4 +7,5 @@ xgboost
 hyperopt
 fastapi
 uvicorn
--e .
+python-dotenv
+# -e .
