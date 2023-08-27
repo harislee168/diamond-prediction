@@ -11,7 +11,7 @@ from sklearn.pipeline import Pipeline
 
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import get_slim_dataframe, save_object
+from src.utils import reconstruct_to_dataframe, save_object
 from dataclasses import dataclass
 
 @dataclass
@@ -32,10 +32,6 @@ class DataTransformation:
             ])
             logging.info('created numerical pipeline')
 
-            cut_pipeline = Pipeline([
-                ('cut_ord_encoder', OrdinalEncoder(categories=[['Fair', 'Good', 'Very Good', 'Premium', 'Ideal']]))
-            ])
-
             color_pipeline = Pipeline([
                 ('color_ord_encoder', OrdinalEncoder(categories=[['J', 'I', 'H', 'G', 'F', 'E', 'D']]))
             ])
@@ -44,11 +40,10 @@ class DataTransformation:
                 ('clarity_ord_encoder', OrdinalEncoder(categories=[['I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF']]))
             ])
 
-            logging.info('created categorical pipeline for cut, color, clarity')
+            logging.info('created categorical pipeline for color, clarity')
 
             column_transformer = ColumnTransformer([
                 ('numerical_pipeline', num_pipeline, num_columns),
-                ('cut_pipeline', cut_pipeline, ['cut']),
                 ('color_pipeline', color_pipeline, ['color']),
                 ('clarity_pipeline', clarity_pipeline, ['clarity'])
             ])
@@ -77,15 +72,15 @@ class DataTransformation:
             logging.info('Fit Transform the X_train')
             X_train_transformed = transformer_obj.fit_transform(X_train)
 
-            logging.info('Construct back X_train and get the slim dataframe')
-            slim_X_train_transformed = get_slim_dataframe(
+            logging.info('Construct back X_train slim dataframe')
+            slim_X_train_transformed = reconstruct_to_dataframe(
                 transformer_obj, X_train_transformed)
 
             logging.info('Transform X_test')
             X_test_transformed = transformer_obj.transform(X_test)
 
-            logging.info('Construct back X_test and get the slim dataframe')
-            slim_X_test_transformed = get_slim_dataframe(
+            logging.info('Construct back X_test slim dataframe')
+            slim_X_test_transformed = reconstruct_to_dataframe(
                 transformer_obj, X_test_transformed)
 
             logging.info('Create and save pickle file')

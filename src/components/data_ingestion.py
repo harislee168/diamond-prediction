@@ -41,8 +41,11 @@ class DataIngestion:
             df.to_csv(self.data_ingestion_config.raw_data_path, index=False, header=True)
             logging.info('created artifacts folder and saved the raw dataset')
 
+            logging.info('Create slim df')
+            slim_df = df[['carat', 'y', 'clarity', 'color', 'price']]
+
             logging.info('Train Test Split started')
-            train_set, test_set = train_test_split(df, test_size=0.3, random_state=42)
+            train_set, test_set = train_test_split(slim_df, test_size=0.3, random_state=42)
             train_set.to_csv(self.data_ingestion_config.train_data_path, index=False, header=True)
             test_set.to_csv(self.data_ingestion_config.test_data_path, index=False, header=True)
 
@@ -54,13 +57,13 @@ class DataIngestion:
         except Exception as e:
             raise CustomException(e, sys)
 
-# if __name__ == '__main__':
-#     di = DataIngestion()
-#     train_data_path, test_data_path = di.initiate_data_ingestion()
+if __name__ == '__main__':
+    di = DataIngestion()
+    train_data_path, test_data_path = di.initiate_data_ingestion()
 
-#     dt = DataTransformation()
-#     slim_X_train_transformed, slim_X_test_transformed, y_train, y_test, preprocessor_obj_file_path = dt.initiate_data_transformation(train_data_path, test_data_path)
+    dt = DataTransformation()
+    slim_X_train_transformed, slim_X_test_transformed, y_train, y_test, preprocessor_obj_file_path = dt.initiate_data_transformation(train_data_path, test_data_path)
 
-#     mt = ModelTrainer()
-#     test_score = mt.initiate_model_trainer(slim_X_train_transformed, slim_X_test_transformed, y_train, y_test)
-#     print(f'r2_score is: {test_score}')
+    mt = ModelTrainer()
+    test_score = mt.initiate_model_trainer(slim_X_train_transformed, slim_X_test_transformed, y_train, y_test)
+    print(f'r2_score is: {test_score}')
