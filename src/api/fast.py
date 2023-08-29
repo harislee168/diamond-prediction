@@ -10,7 +10,6 @@ from src.pipeline.initial_pipeline import get_initial_values
 
 app = FastAPI()
 allow_origin_list = os.getenv("ALLOW_ORIGINS").split(',')
-print('allow_origin_list:', allow_origin_list)
 
 app.add_middleware(
     CORSMiddleware,
