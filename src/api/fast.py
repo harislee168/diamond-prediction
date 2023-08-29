@@ -1,17 +1,20 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-import sys
+import os
+
 from src.request_model.diamond_features import DiamondFeatures
 from src.logger import logging
 from src.pipeline.predict_pipeline import predict
 from src.pipeline.initial_pipeline import get_initial_values
 
 app = FastAPI()
+allow_origin_list = os.getenv("ALLOW_ORIGINS").split(',')
+print('allow_origin_list:', allow_origin_list)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    allow_origins=allow_origin_list,  # Allows origins set in .env
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
