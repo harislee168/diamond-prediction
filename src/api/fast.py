@@ -28,7 +28,7 @@ async def get_price_api(diamond_features: DiamondFeatures):
     logging.info('Get price API is called')
     price_prediciton  = predict(diamond_features)
     logging.info('Turn np.float into float and round to the next 2 decimal places')
-    return_price = round(float(price_prediciton[0]), 2)
+    return_price = f'{float(price_prediciton[0]):,.2f}'
     return {'price_prediciton': return_price}
 
 
