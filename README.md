@@ -11,3 +11,7 @@ MODEL_PICKLE=model.pkl
 ALLOW_ORIGINS= YOUR_UI_URL for example: http://localhost:3000
 
 Dataset url: https://www.kaggle.com/datasets/amirhosseinmirzaie/diamonds-price-dataset
+
+To run type uvicorn src.api.fast:app --host 0.0.0.0 --port 8080
+
+Open your browser you can access it from http://localhost:8080/docs
