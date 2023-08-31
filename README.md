@@ -10,3 +10,4 @@ PREPROCESSOR_PICKLE=preprocessor.pkl
 MODEL_PICKLE=model.pkl
 ALLOW_ORIGINS= YOUR_UI_URL for example: http://localhost:3000
 
+Dataset url: https://www.kaggle.com/datasets/amirhosseinmirzaie/diamonds-price-dataset
